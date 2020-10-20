@@ -3,7 +3,7 @@ package org.aklakan.devblog.rdflist;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.aklakan.devblog.rdflist.domain.Author;
+import org.aklakan.devblog.rdflist.domain.Person;
 import org.aklakan.devblog.rdflist.domain.Publication;
 import org.aksw.jena_sparql_api.mapper.proxy.JenaPluginUtils;
 import org.apache.jena.rdf.model.Model;
@@ -23,7 +23,7 @@ public class MainRdfList {
 
         for (Publication item : publications) {
             System.out.println(item.getTitle());
-            System.out.println(item.getAuthors().stream().map(Author::getName).collect(Collectors.joining(", ")));
+            System.out.println(item.getAuthors().stream().map(Person::getName).collect(Collectors.joining(", ")));
         }
         /* Output:
             Awesome research

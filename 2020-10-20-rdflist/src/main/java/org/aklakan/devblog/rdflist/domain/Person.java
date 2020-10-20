@@ -5,7 +5,7 @@ import org.aksw.jena_sparql_api.mapper.annotation.ResourceView;
 import org.apache.jena.rdf.model.Resource;
 
 @ResourceView
-public interface Author
+public interface Person
     extends Resource
 {
     @IriNs("http://xmlns.com/foaf/0.1/")

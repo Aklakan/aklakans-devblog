@@ -77,20 +77,22 @@ With the [jena-sparql-api mapper-proxy](https://github.com/SmartDataAnalytics/je
   * [Person.java](src/main/java/org/aklakan/devblog/rdflist/domain/Person.java)
 * Step 2: Load the RDF graph, select the appropriate subset of resources and apply the views to them. The following snippet is from [MainSparqlList.java](src/main/java/org/aklakan/devblog/rdflist/domain/MainRdfList.java):
 ```java
+public class MainRdfList {
+    public static void main(String[] args) {
+        // Scan the package of Publication and register all classes annotated with @ResourceView
+        JenaPluginUtils.scan(Publication.class);
 
-public static void main(String[] args) {
-    // Scan the package of Publication and register all classes annotated with @ResourceView
-    JenaPluginUtils.scan(Publication.class);
-    Model model = RDFDataMgr.loadModel("publications.ttl");
-    List<Publication> publications = model.listResourcesWithProperty(RDF.type, DCTerms.BibliographicResource)
-        .mapWith(r -> r.as(Publication.class)).toList();
+        Model model = RDFDataMgr.loadModel("publications.ttl");
 
-    for (Publication item : publications) {
-        System.out.println(item.getTitle());
-        System.out.println(item.getAuthors().stream().map(Author::getName).collect(Collectors.joining(", ")));
+        List<Publication> publications = model.listResourcesWithProperty(RDF.type, DCTerms.BibliographicResource)
+            .mapWith(r -> r.as(Publication.class)).toList();
+
+        for (Publication item : publications) {
+            System.out.println(item.getTitle());
+            System.out.println(item.getAuthors().stream().map(Person::getName).collect(Collectors.joining(", ")));
+        }
     }
 }
-
 ```
 
 Without further ado this yields:

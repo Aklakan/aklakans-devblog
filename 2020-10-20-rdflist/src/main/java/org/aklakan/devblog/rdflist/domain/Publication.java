@@ -16,5 +16,5 @@ public interface Publication
     Publication setTitle(String title);
 
     @Iri("http://purl.org/dc/terms/creator")
-    List<Author> getAuthors();
+    List<Person> getAuthors();
 }
