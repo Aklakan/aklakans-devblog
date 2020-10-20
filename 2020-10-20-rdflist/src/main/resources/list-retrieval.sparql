@@ -1,0 +1,17 @@
+INSERT DATA {
+  eg:pub1
+    eg:authors (eg:aut1 eg:aut2) .
+
+  eg:pub2
+    eg:authors (eg:aut2 eg:aut3)
+}
+
+CONSTRUCT {
+  ?pub dct:creator ?auts .
+  ?ln rdf:first ?f ; rdf:rest ?r . # ln = list node
+} {
+  ?pub dct:creator ?auts .
+  ?auts rdf:rest* ?ln .
+
+  ?ln rdf:first ?f ; rdf:rest ?r .
+} ORDER BY ?pub ?f
