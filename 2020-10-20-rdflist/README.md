@@ -25,43 +25,26 @@ a list or array in its host language anyway. Heck, if there was a way to preserv
 even modify the list on the client, track changes, and update the remote dataset. But first things first.
 
 
+Assume the data in [publications.ttl](src/main/resources/publications.ttl).
 The solution to retrieve the whole fragment is fairly staight forward but still worth writing down:
 
-
 ```
-INSERT DATA {
-  eg:pub1
-    eg:authors (eg:aut1 eg:aut2) .
-
-  eg:pub2
-    eg:authors (eg:aut2 eg:aut3)
-}
-
 CONSTRUCT {
-  ?pub
-    eg:authors ?auts .
-
-  # ln = list name, f = first, r = rest
-  ?ln
-    rdf:first ?f ;
-    rdf:rest ?r .
+  ?pub dct:creator ?auts .
+  ?ln rdf:first ?f ; rdf:rest ?r . # ln = list node
 } {
-  ?pub eg:authors ?auts .
-
+  ?pub dct:creator ?auts .
   ?auts rdf:rest* ?ln .
 
-  ?ln
-    rdf:first ?f ;
-    rdf:rest ?r .
+  ?ln rdf:first ?f ; rdf:rest ?r .
 } ORDER BY ?pub ?f
 ```
 
 You can run these queries using your favourite SPARQL 1.1 tool. A simple way to run it
 is with the  [sparql-integrate command](https://github.com/SmartDataAnalytics/RdfProcessingToolkit) command:
 ```bash
-sparql-integrate list-example.sparql
+sparql-integrate src/main/resources/publications.ttl src/main/resources/rdflist.sparql
 ```
-
 
 The output is exactly what we want:
 
