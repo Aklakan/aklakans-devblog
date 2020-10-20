@@ -4,10 +4,7 @@ created: 20-10-2020
 by: [Claus Stadler](http://aksw.org/ClausStadler)
 
 ### Introduction
-In this note I describe how it is possible to work effectively with rdf:Lists:
-
-This note demonstrates how
-
+In this note I describe how it is possible to retrieve an rdf:List with SPARQL and display it from Java.
 
 ### SPARQL 1.1 List Retrieval
 Let's assume you have an RDF dataset that contains information about scientific publications.
