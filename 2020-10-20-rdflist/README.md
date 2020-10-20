@@ -95,7 +95,8 @@ public class MainRdfList {
 }
 ```
 
-Without further ado this yields:
+Without further ado this yields the authors in the right order, because the proxy-mapper provides a
+mutable(!) `java.util.List` view backed by the `rdf:Lists` in the model:
 ```
 Awesome research
 Anna, Bob
