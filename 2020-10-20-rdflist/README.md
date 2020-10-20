@@ -73,9 +73,9 @@ Let's assume we have a local copy of resulting fragment such as in [publications
 With the [jena-sparql-api mapper-proxy](https://github.com/SmartDataAnalytics/jena-sparql-api/tree/master/jena-sparql-api-mapper-proxy) module display of this fragment is straight forward:
 
 * Step 1: Create annotated domain interfaces and mapper proxy will create the implementaions for you.
-  * [Author.java](src/main/java/org/aklakan/devblog/rdflist/domain/Author.java)
+  * [Publication.java](src/main/java/org/aklakan/devblog/rdflist/domain/Publication.java)
   * [Person.java](src/main/java/org/aklakan/devblog/rdflist/domain/Person.java)
-* Step 2: Load the RDF graph, select the appropriate subset of resources and apply the views to them. The following snippet is from [MainSparqlList.java](src/main/java/org/aklakan/devblog/rdflist/domain/MainRdfList.java):
+* Step 2: Load the RDF graph, select the appropriate subset of resources and apply the views to them. The following snippet is from [MainRdfList.java](src/main/java/org/aklakan/devblog/rdflist/domain/MainRdfList.java):
 ```java
 public class MainRdfList {
     public static void main(String[] args) {
