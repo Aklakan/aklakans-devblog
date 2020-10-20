@@ -75,7 +75,7 @@ With the [jena-sparql-api mapper-proxy](https://github.com/SmartDataAnalytics/je
 * Step 1: Create annotated domain interfaces and mapper proxy will create the implementaions for you.
   * [Publication.java](src/main/java/org/aklakan/devblog/rdflist/domain/Publication.java)
   * [Person.java](src/main/java/org/aklakan/devblog/rdflist/domain/Person.java)
-* Step 2: Load the RDF graph, select the appropriate subset of resources and apply the views to them. The following snippet is from [MainRdfList.java](src/main/java/org/aklakan/devblog/rdflist/domain/MainRdfList.java):
+* Step 2: Load the RDF graph, select the appropriate subset of resources and apply the views to them. The following snippet is from [MainRdfList.java](src/main/java/org/aklakan/devblog/rdflist/main/MainRdfList.java):
 ```java
 public class MainRdfList {
     public static void main(String[] args) {

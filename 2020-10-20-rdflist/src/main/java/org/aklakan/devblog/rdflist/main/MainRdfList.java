@@ -1,4 +1,4 @@
-package org.aklakan.devblog.rdflist;
+package org.aklakan.devblog.rdflist.main;
 
 import java.util.List;
 import java.util.stream.Collectors;
