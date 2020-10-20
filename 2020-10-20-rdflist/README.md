@@ -49,27 +49,27 @@ sparql-integrate src/main/resources/publications.ttl src/main/resources/rdflist.
 The output is exactly what we want:
 
 ```ttl
-eg:pub1  eg:authors  _:b0 .
+eg:pub1  dc:creator  _:b0 .
 
-_:b0    rdf:first  eg:aut1 ;
+_:b0    rdf:first  eg:Anna ;
         rdf:rest   _:b1 .
 
-_:b1    rdf:first  eg:aut2 ;
+_:b1    rdf:first  eg:Bob ;
         rdf:rest   rdf:nil .
 
-eg:pub2  eg:authors  _:b2 .
+eg:pub2  dc:creator  _:b2 .
 
-_:b2    rdf:first  eg:aut2 ;
+_:b2    rdf:first  eg:Bob ;
         rdf:rest   _:b3 .
 
-_:b3    rdf:first  eg:aut3 ;
+_:b3    rdf:first  eg:Charlie ;
         rdf:rest   rdf:nil .
 ```
 
 
 ### Accessing the RDF Fragment
 
-Let's assume we have a local copy of resulting fragment such as in [publications.ttl](src/main/resources/publications.ttl)
+Let's assume we have a local copy of resulting fragment such as in [publications.ttl](src/main/resources/publications.ttl).
 With the [jena-sparql-api mapper-proxy](https://github.com/SmartDataAnalytics/jena-sparql-api/tree/master/jena-sparql-api-mapper-proxy) module display of this fragment is straight forward:
 
 * Step 1: Create annotated domain interfaces and mapper proxy will create the implementaions for you.
