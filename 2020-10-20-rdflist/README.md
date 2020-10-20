@@ -1,7 +1,7 @@
 ## Querying list with SPARQL
 
 created: 20-10-2020
-by: Claus Stadler (http://aksw.org/ClausStadler)
+by: [Claus Stadler](http://aksw.org/ClausStadler)
 
 ### Introduction
 In this note I describe how it is possible to work effectively with rdf:Lists:
@@ -57,7 +57,7 @@ CONSTRUCT {
 ```
 
 You can run these queries using your favourite SPARQL 1.1 tool. A simple way to run it
-is with the  [https://github.com/SmartDataAnalytics/RdfProcessingToolkit](sparql-integrate command) command:
+is with the  [sparql-integrate command](https://github.com/SmartDataAnalytics/RdfProcessingToolkit) command:
 ```bash
 sparql-integrate list-example.sparql
 ```
