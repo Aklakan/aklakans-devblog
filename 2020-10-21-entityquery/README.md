@@ -1,14 +1,14 @@
 ## Proposal for a Resource-Centric SPARQL Query Form
 
 Maybe you never noticed, but SPARQL 1.1 does not directly allow retrieval of graph fragments rooted in an entity.
-Sure, you can retrieve graph fragments, such as
+Sure, one can retrieve graph fragments using SPARQL construct queries, such as
 
 ```
 CONSTRUCT WHERE { ?x a foaf:Person ; foaf:knows ?y . ?y a foaf:Person }
 ```
 
-This gives us just a bunch of triples. Standard SPARQL CONSTRUCT queries are triple-centric.
-However, it is the resource-centric view that is akin to traversal attributes of an object graph.
+But this gives one just a bunch of triples. Standard SPARQL CONSTRUCT queries are triple-centric.
+However, it is the resource-centric view that facilitates traversal of an RDF graph akin to traversal of attributes of an object graph.
 With object graph I broadly mean any form of traversal from an entity via an attribute to another entity or value.
 E.g. Moving from a json object to another one via one of its properties. Moving from an HTML element to its child or parent. Moving from a Java object via an attribute to a related one. Thing - attribute - thing. Its ubiquitous. It's the thing that is needed in applications.
 
