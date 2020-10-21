@@ -150,11 +150,13 @@ To this point we could achieve the same th BIND(BNODE(...)) approach.
 
 The aspect that makes the difference is when combining it with partitioned resource centric retrieval:
 
+```sparql
 CONSTRUCT { _:X a sosa:Observation }
 KEY :X (?city ?day)
 WHERE { { SELECT ?city ?day ... } }
 PARTITION BY (?city ?day) //
 ROOTED IN _:X
+```
 
 This yields for each value of (?city ?day) an RDF graph with a starting node that is a blank node based on the values of (?city ?day) within that partition.
 
