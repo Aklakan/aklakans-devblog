@@ -122,7 +122,8 @@ With standard SPARQL 1.1 there aren't that many options:
         BIND(tuple(?city, ?day) AS ?X). As a workaround we may resort to
         ```sparql
         BIND(BNODE(CONCAT(STR(?city), '|custom_separator|', STR(?day)) AS ?X))
-        ```. Ugly, but it works for allocating unique blank nodes. However, this way the information that X should be blank node based on a compound key is no longer explicit in the model. I will show in a moment why we this information is very useful.
+        ```
+        Ugly, but it works for allocating unique blank nodes. However, this way the information that X should be blank node based on a compound key is no longer explicit in the model. I will show in a moment why we this information is very useful.
 * (2) We turn X into the blank node _:X. Then every single binding of the WHERE clause will create a new blank node. If the cardinality between ?city and ?cityLabel is not 1:1 we will end up with many blank nodes which have equivalent values for their city and day properties. Certainly something we don't want.
 
 
@@ -133,15 +134,15 @@ This way, a certain degree of control over the blank node allocation in CONSTRUC
 
 ```sparql
 CONSTRUCT { _:X a sosa:Observation }
-KEY :X (?city ?day)
+KEY _:X (?city ?day)
 WHERE { { SELECT ?city ?day ... } }
 ```
 
 This pattern can be repeated to assign any blank node mentioned in the CONSTRUCT template, e.g.
 ```sparql
 CONSTRUCT { ... _:X ... _:Y  ... }
-KEY :X (?a ?b)
-KEY :Y (?b ?c)
+KEY _:X (?a ?b)
+KEY _:Y (?b ?c)
 WHERE { ... }
 ```
 
