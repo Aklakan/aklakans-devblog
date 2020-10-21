@@ -169,7 +169,7 @@ This yields for each value of (?city ?day) an RDF graph with a starting node tha
 
 
 ## Benefit in Programmatic Usage
-This approach would allow directly mapping SPARQL Entity Query responses to views of RDF resources:
+In Apache Jena, this approach would greatly simplify directly mapping SPARQL Entity Query responses to views of RDF resources:
 
 ```java
 @ResourceView
@@ -184,7 +184,8 @@ interface MyObservation extends Resource {
     Decimal getAvgTemp();
 }
 
-Stream<RDFNode> stream = QueryExecution.execRDFNode("CONSTRUCT {...} PARTITION BY ?x ROOTED IN ?x")
+JenaPluginUtils.registerResourceViews(MyObservation.class);
+Stream<RDFNode> stream = rdfConnection.query("CONSTRUCT {...} PARTITION BY ?x ROOTED IN ?x").execRDFNode();
 stream.map(rdfNode -> rdfNode.as(MyObservation.class)).forEach(System.out::println);
 
 ```
