@@ -82,13 +82,13 @@ CONSTRUCT WHERE { ?x a foaf:Person ; foaf:knows ?y . ?y a foaf:Person } PARTITIO
 As only one RDF term of the template can be designated as a root there is no need to include the variable in the result.
 
 
-If we combine this with an ORDER BY clause that matches the PARTITION BY clause then
-we know that all bindings for a partition are consecutive and once the binding that acts as the primary key changes we know
-we have seen the complete partition - this is a simple basis for enabling stream processing.
+### Sketch for implementing PARTITION BY basd on ORDER BY
+A straight forward way to implement PARTITION BY is based on ORDER BY:
+By prepending the PARTITION BY variables before any sort condition in the ORDER BY clause of corresponding standard SPARQL 1.1 query, the result set will
+cause all bindings belonging to a partition to be consecutive. When while iterating the bindings the 'key-part' changes we know
+that all bindings of the partition have been encountered. This can serve as a basis for streaming partitions.
 
-```sparql
-SELECT ?x ?y { ?x a foaf:Person ; foaf:knows ?y . ?y a foaf:Person } PARTITION BY ?x ORDER BY ?x
-```
+
 
 
 ## PARTITION BY and ROOTED IN with Compound Keys
@@ -146,7 +146,7 @@ KEY _:Y (?b ?c)
 WHERE { ... }
 ```
 
-To this point we could achieve the same th BIND(BNODE(...)) approach.
+To this point we can achieve the same with BIND(BNODE(...)) approach.
 
 The aspect that makes the difference is when combining it with partitioned resource centric retrieval:
 
@@ -158,10 +158,11 @@ PARTITION BY (?city ?day) //
 ROOTED IN _:X
 ```
 
+This model cleanly captures how to create rooted graph fragments from the underlying bindings.
 This yields for each value of (?city ?day) an RDF graph with a starting node that is a blank node based on the values of (?city ?day) within that partition.
 
 
-| Key (?city day)                 | Graphs (1 per partition)                         | Roots (sequence of RDF terms) |
+| Key (?city day)                 | Graphs (1 per partition)                          | Roots (sequence of RDF terms) |
 |---------------------------------|---------------------------------------------------|-------------------------------|
 | (?city = :Leipzig, ?day = 30)   | _:leipzig-30 :city :Leipzig; :day 30; :avgTemp 10 | (_:leipzig-30)                |
 
