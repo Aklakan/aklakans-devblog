@@ -167,3 +167,25 @@ This yields for each value of (?city ?day) an RDF graph with a starting node tha
 | (?city = :Leipzig, ?day = 30)   | _:leipzig-30 :city :Leipzig; :day 30; :avgTemp 10 | (_:leipzig-30)                |
 
 
+
+## Benefit in Programmatic Usage
+This approach would allow directly mapping SPARQL Entity Query responses to views of RDF resources:
+
+```java
+@ResourceView
+interface MyObservation extends Resource {
+    @Iri(":city") @IriType
+    String getCity();
+
+    @Iri(":day")
+    Integer getDay();
+
+    @Iri(":avgTemp")
+    Decimal getAvgTemp();
+}
+
+Stream<RDFNode> stream = QueryExecution.execRDFNode("CONSTRUCT {...} PARTITION BY ?x ROOTED IN ?x")
+stream.map(rdfNode -> rdfNode.as(MyObservation.class)).forEach(System.out::println);
+
+```
+
