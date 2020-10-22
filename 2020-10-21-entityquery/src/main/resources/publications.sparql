@@ -1,0 +1,19 @@
+CONSTRUCT {
+  # Everything related to the publications
+  ?pub ?x ?y .
+
+  ?pub dct:creator ?auts .
+  ?ln rdf:first ?f ; rdf:rest ?r .
+
+  # Everything related to the authors
+  ?f ?p ?o
+} {
+  ?pub ?x ?y .
+
+
+  ?pub dct:creator ?auts .
+  ?auts rdf:rest* ?ln .
+  ?ln rdf:first ?f ; rdf:rest ?r .
+
+  ?f ?p ?o .
+}
