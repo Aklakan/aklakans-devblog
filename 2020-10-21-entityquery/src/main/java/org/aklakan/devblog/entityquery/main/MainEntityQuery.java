@@ -11,13 +11,19 @@ import org.aksw.jena_sparql_api.mapper.proxy.JenaPluginUtils;
 import org.aksw.jena_sparql_api.rx.PartitionedQueryImpl;
 import org.aksw.jena_sparql_api.rx.PartitionedQueryRx;
 import org.aksw.jena_sparql_api.stmt.SparqlStmtMgr;
+import org.aksw.jena_sparql_api.utils.Vars;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
+import org.apache.jena.query.SortCondition;
 import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.rdfconnection.RDFConnectionFactory;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.sparql.core.Var;
+import org.apache.jena.sparql.expr.Expr;
+import org.apache.jena.sparql.expr.ExprAggregator;
+import org.apache.jena.sparql.expr.ExprVar;
+import org.apache.jena.sparql.expr.aggregate.AggMax;
 import org.apache.jena.sparql.lang.arq.ParseException;
 import org.apache.jena.vocabulary.RDFS;
 
@@ -50,14 +56,12 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class MainEntityQuery {
     public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
-        // Scan the package of Publication and register all classes annotated with @ResourceView
+        // Scan the package of Publication.class and register all classes annotated with @ResourceView
+        // to jena's polymorphism system
         JenaPluginUtils.scan(Publication.class);
 
-        String src = "publications.ttl";
-        Dataset ds = RDFDataMgr.loadDataset(src);
-
-
-        // Load a query template
+        Dataset ds = RDFDataMgr.loadDataset("publications.ttl");
+        // Load a query from file
         Query standardQuery = SparqlStmtMgr.loadQuery("publications.sparql");
 
 
@@ -69,14 +73,29 @@ public class MainEntityQuery {
         rootedQuery.setRootNode(rootNode);
         rootedQuery.getPartitionVars().add(rootNode);
 
+        // Note: jena cannot parse agg expressions without a query because they need to be allocated there
+        // ExprUtils.parse("MAX(?date)")
+
+        // The aggregator of the following expression will be properly allocated on the query;
+        // the dummy var will then be lost
+        Expr sortExpr = new ExprAggregator(Var.alloc("dummy"), new AggMax(new ExprVar(Var.alloc("date"))));
+        rootedQuery.getPartitionOrderBy().add(new SortCondition(sortExpr, Query.ORDER_ASCENDING));
+
+        // If partitions is used, then limit/offset refers to partitions
+        standardQuery.setOffset(0);
+        standardQuery.setLimit(1);
+
         /* The code above corresponds to
 
             CONSTRUCT { ?pub a dct:BibliographicResource . ?pub ... }
+            ENTITY ?pub
             WHERE {
-              ?pub a dct:dct:BibliographicResource . ?pub ...
+              ?pub a dct:dct:BibliographicResource ;
+                   dct:created ?date;
+                   ...
             }
-            PARTITIONED BY ?pub
-            ROOTED IN ?pub
+            PARTITION BY ?pub
+            ORDER PARTITIONS BY DESC(MAX(?date))
        */
 
 

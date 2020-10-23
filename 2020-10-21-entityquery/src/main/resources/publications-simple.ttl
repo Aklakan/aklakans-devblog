@@ -1,20 +1,22 @@
-PREFIX rdf: <>
+# Variant of the publications data where the creator
+# is a multi-valued property rather than an rdf:list
+
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX eg: <http://www.example.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 eg:pub1
   a dct:BibliographicResource ;
   dct:title "Awesome research" ;
-  dct:creator (eg:Anna eg:Bob) ;
+  dct:creator eg:Anna, eg:Bob ;
   dct:created "2015-10-10"^^xsd:date ;
   .
 
 eg:pub2
   a dct:BibliographicResource ;
   dct:title "Awesome engineering" ;
-  dct:creator (eg:Bob eg:Charlie) ;
+  dct:creator eg:Bob, eg:Charlie ;
   dct:created "2018-03-03"^^xsd:date ;
   .
 

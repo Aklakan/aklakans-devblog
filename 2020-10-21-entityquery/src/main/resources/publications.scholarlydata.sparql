@@ -1,0 +1,34 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX conf: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+PREFIX eg: <http://www.example.org/>
+
+CONSTRUCT {
+  ?pub
+    rdfs:label ?label ;
+    dct:creator ?content .
+
+  ?content foaf:name ?name .
+
+  ?pub eg:sortKey ?firstAuthorName .
+}
+WHERE {
+  ?pub
+    a conf:InProceedings ;
+    rdfs:label ?label ;
+    bibo:authorList ?list .
+
+  ?list
+    conf:hasFirstItem ?firstItem ;
+    conf:hasItem ?item .
+
+  ?firstItem conf:hasContent ?firstAuthor .
+  ?firstAuthor foaf:name ?firstAuthorName .
+
+
+  ?item conf:hasContent ?content .
+  ?content foaf:name ?name .
+}

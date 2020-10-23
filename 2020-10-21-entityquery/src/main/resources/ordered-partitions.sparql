@@ -1,0 +1,16 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+SELECT ?sortKey ?partitionVar1 ?x ?date {
+  { SELECT ?partitionVar1 (MAX(?date) AS ?sortKey) {
+    { ?x a dct:BibliographicResource ; dct:created ?date }
+    BIND(?x AS ?partitionVar1)
+  } GROUP BY ?partitionVar1 }
+
+  # CORRELATED JOIN here perhaps?
+  { ?x a dct:BibliographicResource ; dct:created ?date }
+  FILTER(?x = ?partitionVar1) 
+
+} ORDER BY DESC(?sortKey) ?partitionVar1
+

@@ -1,9 +1,7 @@
 package org.aklakan.devblog.entityquery.domain;
 
-import java.util.List;
+import java.util.Collection;
 
-import org.aksw.jena_sparql_api.mapper.annotation.Iri;
-import org.aksw.jena_sparql_api.mapper.annotation.IriNs;
 import org.aksw.jena_sparql_api.mapper.annotation.ResourceView;
 import org.apache.jena.rdf.model.Resource;
 
@@ -11,10 +9,7 @@ import org.apache.jena.rdf.model.Resource;
 public interface Publication
     extends Resource
 {
-    @IriNs("http://purl.org/dc/terms/")
     String getTitle();
     Publication setTitle(String title);
-
-    @Iri("http://purl.org/dc/terms/creator")
-    List<Person> getAuthors();
+    Collection<Person> getAuthors();
 }
