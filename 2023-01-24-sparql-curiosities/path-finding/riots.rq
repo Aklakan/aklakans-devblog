@@ -1,0 +1,21 @@
+PREFIX path: <http://jsa.aksw.org/fn/>
+PREFIX array: <http://jsa.aksw.org/fn/array/>
+PREFIX number: <http://jsa.aksw.org/fn/number/>
+SELECT ?source ?target ?pathLen ?path WHERE {
+  # { SELECT * { ?s a ?t } LIMIT 1 }
+
+  # ?s <http://www.w3.org/2000/01/rdf-schema#subClassOf>* owl:Thing .
+  # Current limitation of path:KShortestPaths: Start point in subject position must be bound
+  owl:Thing path:kShortestPaths("(^<http://www.w3.org/2000/01/rdf-schema#subClassOf>)*" ?path ?t 100)
+
+  BIND(array:size(?path) AS ?pathLen)
+
+  FILTER EXISTS {
+    (2 ?pathLen 3 2) number:range ?subClassIdx .
+    BIND(array:get(?path, ?subClassIdx) AS ?subClass)
+    FILTER (CONTAINS(STR(?subClass), "Riot"))
+  }
+  BIND(array:get(?path, 0) AS ?source)
+  BIND(array:get(?path, 1) AS ?target) # In this example it should always match ?t
+}
+

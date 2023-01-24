@@ -1,0 +1,59 @@
+#!/usr/bin/rpt integrate
+# See https://lisperator.net/blog/javascript-sudoku-solver/ for more considerations
+
+PREFIX array: <http://jsa.aksw.org/fn/array/>
+PREFIX json: <http://jsa.aksw.org/fn/json/>
+
+SELECT ?row WHERE {
+  BIND(json:array(
+    json:array(1, 0, 0, 0),
+    json:array(0, 2, 0, 0),
+    json:array(0, 0, 4, 0),
+    json:array(0, 0, 0, 3)
+  ) AS ?board)
+  
+  BIND(json:js(
+"""
+(board) => {
+  let n = board.length;
+  let all = Array(); for (let i = 1; i <= n; ++i) { all.push(i); }
+
+  let getChoices = (board, x, y) => {
+    let m = board.length; let n = board[x].length; 
+    let v = board[x][y];
+    if (v != 0) { return [v]; }
+    let taken = Array(n + 1);
+    for (let i = 0; i < n; ++i) { taken[board[x][i]] = true } // collect values in row x
+    for (let j = 0; j < m; ++j) { taken[board[j][y]] = true } // collect values in column y
+    return all.filter(e => !taken[e]);
+  };
+
+  let solve = (board, x, y) => {
+    // print("solve", board, x, y);
+
+    let n = board.length;
+    if (y >= n) { return true; }
+    let backup = board[x][y];
+    let choices = getChoices(board, x, y);
+    var xx = x + 1; var yy = y;
+    if (xx >= n) { xx = 0; ++yy; }
+    for (let choice of choices) {
+      board[x][y] = choice;
+      if (solve(board, xx, yy)) return true;
+    }
+    board[x][y] = backup;
+    return false;
+  };
+
+  let verdict = solve(board, 0, 0);
+  return verdict ? board : "no solution";
+  // return getChoices(board, 1, 0);
+}
+"""
+, ?board) AS ?solution)
+
+?solution json:unnest (?row)
+  
+} LIMIT 10
+
+

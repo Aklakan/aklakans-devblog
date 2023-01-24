@@ -1,0 +1,3 @@
+PREFIX eg: <http://www.example.org/>
+eg:field eg:allowed 1, 2, 3, 4 .
+
